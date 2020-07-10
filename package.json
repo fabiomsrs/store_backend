@@ -11,6 +11,7 @@
         "start:dev": "ts-node src/main.ts",
         "migration:generate": "ts-node node_modules/typeorm/cli.js migration:generate -f ormconfig -d src/migrations -n",
         "migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert -f ormconfig",
+        "migration:run": "ts-node node_modules/typeorm/cli.js migration:run -f ormconfig",
         "watch:dev": "nodemon --config nodemon.json",
         "debug:dev": "nodemon --config nodemon-debug.json",
         "webpack": "webpack --config webpack.config.js --progress",
