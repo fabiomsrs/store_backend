@@ -40,6 +40,7 @@
         "@nestjs/typeorm": "^7.0.0",
         "aws-sdk": "~2.683.0",
         "bcrypt": "~3.0.6",
+        "cielo": "^2.3.1",
         "class-transformer": "^0.2.3",
         "class-validator": "^0.12.2",
         "compression": "~1.7.4",
