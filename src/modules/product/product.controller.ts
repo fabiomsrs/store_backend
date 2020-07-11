@@ -18,10 +18,12 @@ import {
 } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
+import { AuthUser } from '../../decorators/auth-user.decorator';
 import { Roles } from '../../decorators/roles.decorator';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
+import { UserEntity } from '../user/user.entity';
 import { ProductDto } from './dto/ProductDto';
 import { ProductsPageDto } from './dto/ProductPageDto';
 import { ProductRegisterDto } from './dto/ProductRegisterDto';
@@ -42,7 +44,9 @@ export class ProductController {
     @ApiOkResponse({ type: ProductDto, description: 'Successfully Registered' })
     async productRegister(
         @Body() productRegisterDto: ProductRegisterDto,
+        @AuthUser() user: UserEntity,
     ): Promise<ProductDto> {
+        productRegisterDto.user = user;
         const createdProduct = await this._productService.createProduct(
             productRegisterDto,
         );
