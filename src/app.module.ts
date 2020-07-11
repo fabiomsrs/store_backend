@@ -7,6 +7,7 @@ import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { CieloModule } from './modules/cielo/cielo.module';
 import { MathModule } from './modules/math/math.module';
+import { PaymentModule } from './modules/payment/payment.module';
 import { ProductModule } from './modules/product/product.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigService } from './shared/services/config.service';
@@ -25,6 +26,7 @@ import { SharedModule } from './shared/shared.module';
                 configService.typeOrmConfig,
             inject: [ConfigService],
         }),
+        PaymentModule,
     ],
 })
 export class AppModule implements NestModule {

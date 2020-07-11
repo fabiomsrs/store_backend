@@ -16,10 +16,14 @@ import { TransactionCreditCardResponseModel } from 'cielo/src/models/credit-card
 
 import { cielo } from '../../common/constants/cielo';
 import { RoleType } from '../../common/constants/role-type';
+import { AuthUser } from '../../decorators/auth-user.decorator';
 import { Roles } from '../../decorators/roles.decorator';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
+import { PaymentEntity } from '../payment/payment.entity';
+import { PaymentService } from '../payment/payment.service';
+import { UserEntity } from '../user/user.entity';
 import { TransactionDto } from './dto/TransactionDto';
 
 @Controller('cielo')
@@ -28,13 +32,25 @@ import { TransactionDto } from './dto/TransactionDto';
 @UseInterceptors(AuthUserInterceptor)
 @ApiBearerAuth()
 export class CieloController {
+    constructor(private _paymentService: PaymentService) {}
+
     @Post('transaction')
     @Roles(RoleType.USER)
     @HttpCode(HttpStatus.OK)
     async transaction(
         @Body() transactionDto: TransactionDto,
+        @AuthUser() user: UserEntity,
     ): Promise<TransactionCreditCardResponseModel> {
-        return cielo.creditCard.transaction(transactionDto);
+        const transaction = await cielo.creditCard.transaction(transactionDto);
+        const payment = new PaymentEntity();
+        payment.amount = transaction.payment.amount;
+        payment.id = transaction.payment.paymentId;
+        payment.installments = transaction.payment.installments;
+        payment.status = transaction.payment.status;
+        payment.user = user;
+
+        await this._paymentService.createPayment(payment);
+        return transaction;
     }
 
     @Get('capture/:paymentId')
@@ -46,6 +62,10 @@ export class CieloController {
         const captureTransaction: CaptureRequestModel = {
             paymentId,
         };
-        return cielo.creditCard.captureSaleTransaction(captureTransaction);
+        const capture = await cielo.creditCard.captureSaleTransaction(
+            captureTransaction,
+        );
+        this._paymentService.executePayment(paymentId, capture.status);
+        return capture;
     }
 }
