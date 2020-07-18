@@ -13,5 +13,8 @@ export class CreditCardDto {
     readonly holder: string;
 
     @ApiProperty()
+    readonly securityCode: string;
+
+    @ApiProperty()
     expirationDate: string;
 }
