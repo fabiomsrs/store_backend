@@ -21,7 +21,6 @@ import { Roles } from '../../decorators/roles.decorator';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
-import { PaymentEntity } from '../payment/payment.entity';
 import { PaymentService } from '../payment/payment.service';
 import { UserEntity } from '../user/user.entity';
 import { TransactionDto } from './dto/TransactionDto';
@@ -39,18 +38,10 @@ export class CieloController {
     @HttpCode(HttpStatus.OK)
     async transaction(
         @Body() transactionDto: TransactionDto,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @AuthUser() user: UserEntity,
     ): Promise<TransactionCreditCardResponseModel> {
-        const transaction = await cielo.creditCard.transaction(transactionDto);
-        const payment = new PaymentEntity();
-        payment.amount = transaction.payment.amount;
-        payment.id = transaction.payment.paymentId;
-        payment.installments = transaction.payment.installments;
-        payment.status = transaction.payment.status;
-        payment.user = user;
-
-        await this._paymentService.createPayment(payment);
-        return transaction;
+        return cielo.creditCard.transaction(transactionDto);
     }
 
     @Get('capture/:paymentId')

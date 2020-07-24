@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { ProductEntity } from '../product/product.entity';
 import { UserEntity } from '../user/user.entity';
 
 @Entity({ name: 'payment' })
@@ -21,6 +25,10 @@ export class PaymentEntity {
 
     @Column()
     installments: number;
+
+    @ManyToMany((type) => ProductEntity)
+    @JoinTable()
+    products: ProductEntity[];
 
     @Column()
     status: number;

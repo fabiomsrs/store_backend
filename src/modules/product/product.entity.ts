@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Check, Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UserEntity } from '../user/user.entity';
@@ -12,8 +12,13 @@ export class ProductEntity extends AbstractEntity<ProductDto> {
     @Column()
     value: number;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @ManyToOne((type) => UserEntity)
     user: UserEntity;
+
+    @Column({ default: 1 })
+    @Check('quantity>=0')
+    quantity: number;
 
     @Column({ nullable: true })
     description: string;

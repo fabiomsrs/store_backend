@@ -16,6 +16,11 @@ export class ProductRegisterDto {
     @ApiProperty()
     readonly value: number;
 
+    @IsNumber()
+    @IsNotEmpty()
+    @ApiProperty()
+    readonly quantity: number;
+
     user: UserEntity;
 
     @IsString()

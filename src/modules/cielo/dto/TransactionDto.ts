@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
+import { ProductEntity } from '../../product/product.entity';
 import { CustomerDto } from './CustomerDto';
 import { PaymentDto } from './PaymentDto';
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { AbstractDto } from '../../../common/dto/AbstractDto';
 import { UserDto } from '../../user/dto/UserDto';
@@ -13,7 +13,10 @@ export class ProductDto extends AbstractDto {
     @ApiPropertyOptional()
     value: number;
 
-    @ApiProperty({ type: UserDto })
+    @ApiPropertyOptional()
+    quantity: number;
+
+    @ApiPropertyOptional({ type: UserDto })
     user: UserDto;
 
     @ApiPropertyOptional()
@@ -22,6 +25,7 @@ export class ProductDto extends AbstractDto {
     constructor(product: ProductEntity) {
         super(product);
         this.name = product.name;
+        this.quantity = product.quantity;
         this.value = product.value;
         this.description = product.description;
     }

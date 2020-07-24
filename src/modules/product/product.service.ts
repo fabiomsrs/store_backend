@@ -43,4 +43,11 @@ export class ProductService {
         });
         return new ProductsPageDto(products.toDtos(), pageMetaDto);
     }
+
+    async updateQuantity(id: string, quantity: number): Promise<any> {
+        const product = await this.productRepository.findOne(id);
+        return this.productRepository.update(id, {
+            quantity: product.quantity - quantity,
+        });
+    }
 }
