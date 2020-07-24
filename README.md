@@ -17,6 +17,7 @@ yarn migration:run
 yarn start:dev
 
 ```
+after running all the steps a default user will be created(email: "u@u.com", password: "123456")
 
 ## Documentation
 
